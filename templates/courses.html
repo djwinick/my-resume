@@ -1,0 +1,27 @@
+{% extends "home-base.html"%}
+{% block title %}All Courses{% endblock %}
+{% block head%}
+  {{ super() }}
+{% endblock%}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"> <i class="fa fa-music" aria-hidden="true"></i> Browse All Courses:</h1>
+    <ul>
+        {% for courses in courses %}
+        <li><a id="developer" href="#" data-toggle="tooltip" data-placement="top" title= "Business Application Development II" >{{courses}}</a></li>
+        {% endfor%}
+    </ul>
+  </div>
+
+{% endblock%}
+
+{% block scripts%}
+  {{super()}}
+  <script>
+  $(document).ready(function () {
+    $('#developer').tooltip()
+  });
+  </script>
+{% endblock%}
