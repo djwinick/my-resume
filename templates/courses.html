@@ -1,27 +1,69 @@
 {% extends "home-base.html"%}
 {% block title %}All Courses{% endblock %}
-{% block head%}
-  {{ super() }}
-{% endblock%}
 {% block page_content%}
 
   <!-- Page Content -->
   <div class="container">
-    <h1 class="mt-5"> <i class="fa fa-music" aria-hidden="true"></i> Browse All Courses:</h1>
-    <ul>
-        {% for courses in courses %}
-        <li><a id="developer" href="#" data-toggle="tooltip" data-placement="top" title= "Business Application Development II" >{{courses}}</a></li>
-        {% endfor%}
-    </ul>
+    <h1 class="mt-5"><i class="fa fa-book" aria-hidden="true"></i> Courses:</h1>
+    <div class="row bottom-margin">
+      <a href="/course/add" class="btn btn-primary" role="button" aria-disabled="true">Add Courses</a>
+    </div>
+    {% if courses %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Course Number</th>
+            <th>Course Title</th>
+            <th>Professor</th>
+            <th>Course Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
+          <tr>
+              <th scope="row">{{course.id}}</th>
+              <td>{{course.number}}</td>
+              <td>{{course.title}}</td>
+              <td>{{course.professor.name}}</td>
+              <td>
+              <!--  view lyrics button trigger modal -->
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{course.id}}">
+                See Description
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="{{course.id}}" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">{{course.name}}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      {{course.desc}}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </td>
+              <td>
+                <a href="/course/edit/{{course.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+              </td>
+          </tr>
+
+          {% endfor%}
+        </tbody>
+      </table>
+    {% else %}
+      <h3>There are no courses in the database yet.</h3>
+    {% endif %}
   </div>
 
-{% endblock%}
-
-{% block scripts%}
-  {{super()}}
-  <script>
-  $(document).ready(function () {
-    $('#developer').tooltip()
-  });
-  </script>
 {% endblock%}
