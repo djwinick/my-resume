@@ -17,7 +17,7 @@ class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     dept = db.Column(db.String(10))
-    courses = db.relationship('Course', backref='professor')
+    courses = db.relationship('Course', backref='professor', cascade="delete")
 
 
 class Course(db.Model):
@@ -89,6 +89,19 @@ def edit_professors(id):
         return redirect(url_for('show_all_professors'))
 
 
+@app.route('/professor/delete/<int:id>', methods=['GET', 'POST'])
+def delete_professors(id):
+    professor = Professor.query.filter_by(id=id).first()
+    if request.method == 'GET':
+        return render_template('professors-delete.html', professor=professor)
+    if request.method == 'POST':
+        # delete the professor by id
+        # all related courses are deleted as well
+        db.session.delete(professor)
+        db.session.commit()
+        return redirect(url_for('show_all_professors'))
+
+
 @app.route('/course/add', methods=['GET', 'POST'])
 def add_courses():
     if request.method == 'GET':
@@ -124,6 +137,20 @@ def edit_course(id):
         professor = Professor.query.filter_by(name=professor_name).first()
         course.professor = professor
         # update the database
+        db.session.commit()
+        return redirect(url_for('show_all_courses'))
+
+
+@app.route('/course/delete/<int:id>', methods=['GET', 'POST'])
+def delete_course(id):
+    course = Course.query.filter_by(id=id).first()
+    professors = Professor.query.all()
+    if request.method == 'GET':
+        return render_template('courses-delete.html', course=course, professors=professors)
+    if request.method == 'POST':
+        # use the id to delete the course
+        # course.query.filter_by(id=id).delete()
+        db.session.delete(course)
         db.session.commit()
         return redirect(url_for('show_all_courses'))
 

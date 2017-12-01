@@ -1,0 +1,29 @@
+{% extends "home-base.html"%}
+{% block title %}Delete Course{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-book" aria-hidden="true"></i> Delete the following course:</h1>
+    <form action="/course/delete/{{course.id}}" method="post">
+      <div class="form-group">
+        <label>Number</label>
+        <input class="form-control" type="text" name="number" value="{{course.number}}" required="true" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control" type="text" name="title" value="{{course.title}}" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Professor</label>
+        <input class="form-control" type="text" name="professor" value="{{course.professor.name}}" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" name="desc" required="true" readonly="true">{{course.desc}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-danger" id="delete_btn">Delete</button>
+    </form>
+  </div>
+
+{% endblock%}
